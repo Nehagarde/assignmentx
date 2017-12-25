@@ -7,25 +7,6 @@ from initializenewtrack import NewTrack
 class ProcessSeminars:
     """This Class has function to process and schedule seminars
     """
-    
-
-    def addtomrngsession(self,objtrack,item,newtime):
-        """add seminar to morning session
-        """
-        objtrack.mrngsession += newtime
-        totime = datetime.datetime.strftime(objtrack.mrngtime, '%H:%M')
-        objtrack.data1.append(str(totime)+" "+str(item))
-        objtrack.mrngtime = objtrack.mrngtime+datetime.timedelta(minutes=newtime)
-
-    def addtoevngsession(self,objtrack,item,newtime):
-        """add seminar to evening session
-        """
-        objtrack.eveningsession += newtime
-        totime = datetime.datetime.strftime(objtrack.evngtime, '%H:%M')
-        objtrack.data2.append(str(totime)+" "+str(item))
-        objtrack.evngtime = objtrack.evngtime+datetime.timedelta(minutes=newtime)  
-        
-        
     def processnewlist(self, filelist):
         """ This function processes the file
         """
@@ -40,7 +21,10 @@ class ProcessSeminars:
 
             #For the Morning Session within 180 mins
             if objtrack.max1 >= (objtrack.mrngsession+newtime):
-                self.addtomrngsession(objtrack,item,newtime)
+                objtrack.mrngsession += newtime
+                totime = datetime.datetime.strftime(objtrack.mrngtime, '%H:%M')
+                objtrack.data1.append(str(totime)+" "+str(item))
+                objtrack.mrngtime = objtrack.mrngtime+datetime.timedelta(minutes=newtime)
                 if index == len(filelist)-1:
                     datalist.append(objtrack.data1+ objtrack.data2)
 
@@ -49,7 +33,10 @@ class ProcessSeminars:
                 if objtrack.flag == 0:
                     objtrack.data2.append("12:00 Lunch")
                     objtrack.flag = 1
-                self.addtoevngsession(objtrack,item,newtime)               
+                objtrack.eveningsession += newtime
+                totime = datetime.datetime.strftime(objtrack.evngtime, '%H:%M')
+                objtrack.data2.append(str(totime)+" "+str(item))
+                objtrack.evngtime = objtrack.evngtime+datetime.timedelta(minutes=newtime)
                 if index == len(filelist)-1:
                     if objtrack.eveningsession <= 240 and objtrack.eveningsession >= 180:
                         totime = datetime.datetime.strftime(objtrack.evngtime, '%H:%M')
@@ -66,7 +53,10 @@ class ProcessSeminars:
                     objtrack = NewTrack()
                     #if conference fits in the first session new track
                     if objtrack.max1 >= (objtrack.mrngsession+newtime):
-                        self.addtomrngsession(objtrack,item,newtime)
+                        objtrack.mrngsession += newtime
+                        totime = datetime.datetime.strftime(objtrack.mrngtime, '%H:%M')
+                        objtrack.data1.append(str(totime)+" "+str(item))
+                        objtrack.mrngtime = objtrack.mrngtime+datetime.timedelta(minutes=newtime)
                         if index == len(filelist)-1:
                             datalist.append(objtrack.data1+ objtrack.data2)
 
@@ -75,7 +65,10 @@ class ProcessSeminars:
                         if objtrack.flag == 0:
                             objtrack.data2.append("12:00 Lunch")
                             objtrack.flag = 1
-                        self.addtoevngsession(objtrack,item,newtime)
+                        objtrack.eveningsession += newtime
+                        totime = datetime.datetime.strftime(objtrack.evngtime, '%H:%M')
+                        objtrack.data2.append(str(totime)+" "+str(item))
+                        objtrack.evngtime = objtrack.evngtime+datetime.timedelta(minutes=newtime)
                         if index == len(filelist)-1:
                             if objtrack.eveningsession <= 240 and objtrack.eveningsession >= 180:
                                 totime = datetime.datetime.strftime(objtrack.evngtime, '%H:%M')
